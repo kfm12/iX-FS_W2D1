@@ -1,8 +1,23 @@
-// Uncomment these imports to begin using these cool features!
+import { repository } from '@loopback/repository';
+import { get, param } from '@loopback/rest';
+import { UserRepository } from '../repositories/user.repository';
+import { User } from "../models/user";
 
-// import {inject} from '@loopback/context';
 
 
 export class UsersController {
-  constructor() {}
+  constructor(@repository(UserRepository.name) private userRepo: UserRepository
+  ) { }
+
+  @get('/users')
+  async getAllUsers(): Promise<Array<User>> {
+    return await this.userRepo.find();
+  }
+
+  @get('/users/{userID}')
+  getSpecificUser(@param.path.number("userID") userID: number
+  ): any {
+
+  }
+
 }
