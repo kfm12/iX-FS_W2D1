@@ -1,7 +1,6 @@
-import { DefaultCrudRepository } from '@loopback/repository';
+import { DefaultCrudRepository, juggler } from '@loopback/repository';
 import { inject } from '@loopback/core';
-import { DataSource } from 'loopback-datasource-juggler';
-import { User } from '../models/user';
+import { User } from '../models/user.model';
 
 export class UserRepository extends DefaultCrudRepository<
   User,
@@ -9,7 +8,7 @@ export class UserRepository extends DefaultCrudRepository<
   >
 {
 
-  constructor(@inject('datasources.db') protected datasource: DataSource) {
+  constructor(@inject('datasources.db') protected datasource: juggler.DataSource) {
     super(User, datasource);
   }
 }

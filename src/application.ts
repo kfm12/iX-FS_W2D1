@@ -1,13 +1,23 @@
-import {ApplicationConfig} from '@loopback/core';
-import {RestApplication, RestServer, RestBindings} from '@loopback/rest';
-import {MySequence} from './sequence';
+import { ApplicationConfig } from '@loopback/core';
+import { RestApplication, RestServer, RestBindings } from '@loopback/rest';
+import { MySequence } from './sequence';
+import { db } from './datasources/db.datasources';
 
 /* tslint:disable:no-unused-variable */
 // Binding and Booter imports are required to infer types for BootMixin!
-import {BootMixin, Booter, Binding} from '@loopback/boot';
+import { BootMixin, Booter, Binding } from '@loopback/boot';
+
+import {
+  Class,
+  Repository,
+  RepositoryMixin,
+  juggler,
+} from '@loopback/repository';
 /* tslint:enable:no-unused-variable */
 
-export class Day_6Application extends BootMixin(RestApplication) {
+export class GoldenThreadApiApplication extends BootMixin(
+  RepositoryMixin(RestApplication),
+) {
   constructor(options?: ApplicationConfig) {
     super(options);
 
@@ -24,6 +34,14 @@ export class Day_6Application extends BootMixin(RestApplication) {
         nested: true,
       },
     };
+
+    this.setupDatasource();
+  }
+
+  setupDatasource() {
+    const datasource = this.options && this.options.datasource ?
+      this.juggler.DataSource(this.options.datasource) : db;
+    this.dataSource(datasource);
   }
 
   async start() {
