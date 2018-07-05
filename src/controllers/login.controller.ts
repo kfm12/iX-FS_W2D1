@@ -11,7 +11,7 @@ export class LoginController {
   ) { }
 
   @post('/login')
-  async loginUser(@requestBody() user: User): Promise<User> {
+  async loginUser(@requestBody() user: User): Promise<User | null> {
 
     if (!user.email || !user.passwoed) {
       throw new HttpErrors.Unauthorized('invalid credentials');
@@ -32,7 +32,7 @@ export class LoginController {
       where: {
         and: [
           { email: user.email },
-          { password: user.password }
+          { password: user.password }""
         ],
       },
     });
